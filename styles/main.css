@@ -1,0 +1,120 @@
+
+html {
+	height: 100%;
+}
+
+body {
+	background-color: #ccc;
+	text-align: center;
+	height: 100%;
+}
+
+#settings {
+width: 290px;
+height: 100px;
+border: 1px solid black;
+border-radius: 20px;
+margin: auto;
+margin-top: 20px;
+margin-bottom: 20px;
+}
+
+#playerX, #playerO{
+	visibility: hidden;
+}
+
+#gameContainer {
+	width: 290px;
+	height: 290px;
+	border: 10px solid black;
+	border-radius: 20px;
+	margin: auto;
+	display: block;
+}
+#rowA, #rowB, #rowC{
+ height: 90px;
+}
+
+.row p{
+	margin-top: 40%;
+	font-size: 30px;
+}
+
+#a1{
+width: 33.33%;
+height: 100%;
+border-right: 1px solid white;
+border-bottom: 1px solid white;
+
+}
+
+#a2{
+width: 33.33%;
+height: 100%;
+border-right: 1px solid white;
+border-left: 1px solid white;
+border-bottom: 1px solid white;
+}
+
+#a3{
+width: 33.33%;
+height: 100%;
+border-left: 1px solid white;
+border-bottom: 1px solid white;
+}
+
+#b1{
+width: 33.33%;
+height: 100%;
+border-right: 1px solid white;
+border-bottom: 1px solid white;
+border-top: 1px solid white;
+}
+
+#b2{
+width: 33.33%;
+height: 100%;
+border: 1px solid white;
+}
+
+#b3{
+width: 33.33%;
+height: 100%;
+border-left: 1px solid white;
+border-bottom: 1px solid white;
+border-top: 1px solid white;
+}
+
+#c1{
+width: 33.33%;
+height: 100%;
+border-right: 1px solid white;
+border-top: 1px solid white;
+}
+
+#c2{
+width: 33.33%;
+height: 100%;
+border-right: 1px solid white;
+border-left: 1px solid white;
+border-top: 1px solid white;
+}
+
+#c3{
+	width: 33.33%;
+height: 100%;
+border-left: 1px solid white;
+border-top: 1px solid white;
+}
+
+
+
+
+
+
+
+
+
+
+
+
