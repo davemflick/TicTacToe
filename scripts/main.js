@@ -34,6 +34,7 @@ var drawCount = 0;
 $wins.innerHTML = winCount;
 $losses.innerHTML = lossCount;
 $draws.innerHTML = drawCount;
+
 //Determine if you're X or O
 function setUp(){
 	$turn.innerHTML = 'What would you like to play as?';

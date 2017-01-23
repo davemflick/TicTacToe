@@ -30,12 +30,13 @@ margin-bottom: 20px;
 	border-radius: 20px;
 	margin: auto;
 	display: block;
+	margin-bottom: 5px;
 }
 #rowA, #rowB, #rowC{
  height: 90px;
 }
 
-#gameContainer p{
+#a1P, #a2P, #a3P, #b1P, #b2P, #b3P, #c1P, #c2P, #c3P{
 	margin-top: 40%;
 	font-size: 30px;
 }
