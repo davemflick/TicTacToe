@@ -1,3 +1,4 @@
+//Define initial variable values
 var $settings = document.getElementById('settings');
 var $turn = document.getElementById('turn');
 var $status = document.getElementById('status');
@@ -14,6 +15,9 @@ var $c1 = document.getElementById('c1');
 var $c2 = document.getElementById('c2');
 var $c3 = document.getElementById('c3');
 var $box = document.getElementsByClassName('box');
+var $wins = document.getElementById('wins');
+var $losses = document.getElementById('losses');
+var $draws = document.getElementById('draws');
 var scoreX = [];
 var scoreO = [];
 var boxUsed = [$a1, $a2, $a3,
@@ -21,8 +25,16 @@ var boxUsed = [$a1, $a2, $a3,
                $c1, $c2, $c3];
 var turnCount = 0;
 var totalTurnCount = 0;
+var player = '';
+var computer = '';
+var winCount = 0;
+var lossCount = 0;
+var drawCount = 0;
 
-
+$wins.innerHTML = winCount;
+$losses.innerHTML = lossCount;
+$draws.innerHTML = drawCount;
+//Determine if you're X or O
 function setUp(){
 	$turn.innerHTML = 'What would you like to play as?';
 	$playerX.style.visibility = 'visible';
@@ -45,9 +57,6 @@ function playerSelection(){
 	}
 }
 
-var player = '';
-var computer = '';
-
 $playerX.onclick = function(){
    $turn.innerHTML = 'You are playing as X';
     playerSelection();
@@ -62,7 +71,7 @@ $playerO.onclick = function(){
 
 
 
-
+//Adjust Array Values to determine outcomes
 function pushBlock(val){
   if(player === 'X'){scoreX.push(val);
     } else if(player === 'O'){scoreO.push(val);
@@ -74,7 +83,7 @@ function boxesLeft(box){
 	boxUsed.splice(box, 1);
 }
 
-
+//Will mark your choice and then tell computer to make its choice. 
 $a1.onclick = function(){
   if( $a1.children[0].innerHTML === '' && turnCount%2===0){
 	$a1.children[0].innerHTML = player;
@@ -82,7 +91,8 @@ $a1.onclick = function(){
     gameOver();
     turnCount++;
     boxesLeft($a1);
-    compTurn();
+    findWinner();
+    delay();
 }
 }
 
@@ -93,7 +103,8 @@ $a2.onclick = function(){
 	gameOver();
 	turnCount++;
     boxesLeft($a2);
-    compTurn();
+    findWinner();
+    delay();
 }
 }
 
@@ -104,7 +115,8 @@ $a3.onclick = function(){
 	gameOver();
 	turnCount++;
 	boxesLeft($a3);
-	compTurn();
+	findWinner();
+	delay();
 
 }
 }
@@ -116,7 +128,8 @@ $b1.onclick = function(){
 	gameOver();
 	turnCount++;
 	boxesLeft($b1);
-	compTurn();
+	findWinner();
+	delay();
 
 }
 }
@@ -128,7 +141,8 @@ $b2.onclick = function(){
     gameOver();
     turnCount++;
     boxesLeft($b2);
-	compTurn();
+    findWinner();
+	delay();
 
 }
 }
@@ -140,7 +154,8 @@ $b3.onclick = function(){
     gameOver();
     turnCount++;
     boxesLeft($b3);
-	compTurn();
+    findWinner();
+	delay();
 
 }
 }
@@ -152,7 +167,8 @@ $c1.onclick = function(){
     gameOver();
     turnCount++;
     boxesLeft($c1);
-	compTurn();
+    findWinner();
+	delay();
 
 }
 }
@@ -164,7 +180,8 @@ $c2.onclick = function(){
     gameOver();
     turnCount++;
     boxesLeft($c2);
-	compTurn();
+    findWinner();
+	delay();
 
 }
 }
@@ -176,7 +193,8 @@ $c3.onclick = function(){
     gameOver();
     turnCount++;
     boxesLeft($c3);
-	compTurn();
+    findWinner();
+	delay();
 }
 }
 
@@ -202,15 +220,16 @@ function lost (){
  setTimeout(playerSelection, 3000);	
 }
 
-
+//Search through scoreX array to determine if nputed value is present and if so its index 
 function indexX(val){
  return scoreX.indexOf(val);
 }
 
+//Search through scoreO array to determine if inputed value is present and if so its index
 function indexO(val){
  return scoreO.indexOf(val);
 }
-
+//If functions indexO or indexX can find combinations of given values, returns true.
 function findWinner(){
  for(v=0; v<winner.length; v++){
  	if(indexX(winner[v][0]) !== -1 && indexX(winner[v][1]) !== -1 && indexX(winner[v][2]) !== -1 && player === 'X'){
@@ -225,6 +244,7 @@ function findWinner(){
  }
 }
 
+// If game ends in tie
 function gameOver(){
 	totalTurnCount += 1;
   if(totalTurnCount === 9){$status.innerHTML = 'Game Is A Draw';
@@ -233,8 +253,7 @@ function gameOver(){
 }
 
 
-//Set Up computer AI
-
+//When computer makes choice, will push that choice into its array.
 function compPush(val){
 	if(computer === 'X'){
 		scoreX.push(val);
@@ -243,23 +262,40 @@ function compPush(val){
 	}
 }
 
+//Computer will make a random choice of available decisions. 
 function computerSelection(){
-	var max1 = boxUsed.length-1;
-	var min1 = 0; 
 	var selected = boxUsed[Math.floor(Math.random()*boxUsed.length)];
 	if(totalTurnCount < 9){
 	selected.children[0].innerHTML = computer;
 	boxesLeft(selected);
 	compPush(selected);
+	findWinner();
 }
 }
 
+function stopProgram(){
+	if($status.innerHTML !== '') {
+		findWinner();
+	} else computerSelection();
+	if($status.innerHTML === 'You Win!'){
+		$wins.innerHTML = winCount += 1;
+	} else if ($status.innerHTML === 'You Lost'){
+		$losses.innerHTML = lossCount += 1;
+	} else if ($status.innerHTML === 'Game Is A Draw'){
+		$draws.innerHTML = drawCount += 1;
+	}
+}
+
+//Combines functions to determine whether to continue round, end due to winner, end due to draw
 function compTurn(){
 	turnCount++;
 	gameOver();
-	computerSelection();
-	findWinner();
+	stopProgram();
 }
+
+
+
+function delay(){ setTimeout(compTurn, 500)}
 
 
 
