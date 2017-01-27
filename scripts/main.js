@@ -4,6 +4,8 @@ var $turn = document.getElementById('turn');
 var $status = document.getElementById('status');
 var $playerX = document.getElementById('playerX');
 var $playerO = document.getElementById('playerO');
+var $easy = document.getElementById('easy');
+var $hard = document.getElementById('hard');
 var $gameContainer = document.getElementById('gameContainer');
 var $a1 = document.getElementById('a1');
 var $a2 = document.getElementById('a2');
@@ -30,7 +32,7 @@ var computer = '';
 var winCount = 0;
 var lossCount = 0;
 var drawCount = 0;
-
+var mode;
 $wins.innerHTML = winCount;
 $losses.innerHTML = lossCount;
 $draws.innerHTML = drawCount;
@@ -40,12 +42,20 @@ function setUp(){
 	$turn.innerHTML = 'What would you like to play as?';
 	$playerX.style.visibility = 'visible';
 	$playerO.style.visibility = 'visible';
+	$easy.style.visibility = 'hidden'
+	$hard.style.visibility = 'hidden'
 	}
 
 function playerSelection(){
 	$playerX.style.visibility = 'hidden';
 	$playerO.style.visibility = 'hidden';
-	$status.innerHTML = '';
+	$easy.style.visibility = 'visible'
+	$hard.style.visibility = 'visible'
+}
+
+
+function reset(){
+$status.innerHTML = '';
 	scoreX = [];
     scoreO = [];
     boxUsed = [$a1, $a2, $a3,
@@ -70,7 +80,19 @@ $playerO.onclick = function(){
     return player = 'O', computer = 'X';
 }
 
+$easy.onclick = function () {
+  mode = 'easy';
+  $easy.setAttribute('class', 'borderClicked');
+  $hard.removeAttribute('class', 'borderClicked')
+  reset();
+}
 
+$hard.onclick = function () {
+  mode = 'hard';
+  $hard.setAttribute('class', 'borderClicked');
+  $easy.removeAttribute('class', 'borderClicked');
+  reset();
+}
 
 //Adjust Array Values to determine outcomes
 function pushBlock(val){
@@ -83,6 +105,7 @@ function boxesLeft(box){
 	box = boxUsed.indexOf(box);
 	boxUsed.splice(box, 1);
 }
+
 
 //Will mark your choice and then tell computer to make its choice. 
 $a1.onclick = function(){
@@ -200,25 +223,15 @@ $c3.onclick = function(){
 }
 
 
-// Ways to Win
-var winner = [[$a1, $a2, $a3],
-[$a1, $b1, $c1],
-[$a1, $b2, $c3],
-[$a2, $b2, $c2],
-[$a3, $b3, $c3],
-[$a3, $b2, $c1],
-[$b1, $b2, $b3],
-[$c1, $c2, $c3]];
-
 //If the Player Wins round
 function win (){
   $status.innerHTML = 'You Win!';
-  setTimeout(playerSelection, 3000);
+  setTimeout(reset, 3000);
 }
 //If computer wins round.
 function lost (){
  $status.innerHTML = 'You Lost';
- setTimeout(playerSelection, 3000);	
+ setTimeout(reset, 3000);	
 }
 
 //Search through scoreX array to determine if nputed value is present and if so its index 
@@ -230,6 +243,17 @@ function indexX(val){
 function indexO(val){
  return scoreO.indexOf(val);
 }
+
+// Ways to Win
+var winner = [[$a1, $a2, $a3],
+[$a1, $b1, $c1],
+[$a1, $b2, $c3],
+[$a2, $b2, $c2],
+[$a3, $b3, $c3],
+[$a3, $b2, $c1],
+[$b1, $b2, $b3],
+[$c1, $c2, $c3]];
+
 //If functions indexO or indexX can find combinations of given values, returns true.
 function findWinner(){
  for(v=0; v<winner.length; v++){
@@ -249,7 +273,7 @@ function findWinner(){
 function gameOver(){
 	totalTurnCount += 1;
   if(totalTurnCount === 9){$status.innerHTML = 'Game Is A Draw';
-  setTimeout(playerSelection, 3000);
+  setTimeout(reset, 3000);
  }
 }
 
@@ -271,10 +295,137 @@ function computerSelection(){
 	boxesLeft(selected);
 	compPush(selected);
 	findWinner();
-}
+    }
 }
 
-function stopProgram(){
+// Hard Mode Configuration 
+var boxUsedHard = [$a1, $a2, $a3,
+                   $b1, $b2, $b3,
+               	   $c1, $c2, $c3];
+
+
+function boxesLeftHard(box){
+	box = boxUsedHard.indexOf(box);
+	boxUsedHard.splice(box, 1);
+}
+
+function hardMode(){
+	var select;
+	var a1 = boxUsedHard[0].children[0].innerHTML;
+	var a2 = boxUsedHard[1].children[0].innerHTML;
+	var a3 = boxUsedHard[2].children[0].innerHTML;
+	var b1 = boxUsedHard[3].children[0].innerHTML;
+	var b2 = boxUsedHard[4].children[0].innerHTML;
+	var b3 = boxUsedHard[5].children[0].innerHTML;
+	var c1 = boxUsedHard[6].children[0].innerHTML;
+	var c2 = boxUsedHard[7].children[0].innerHTML;
+	var c3 = boxUsedHard[8].children[0].innerHTML;
+
+if (totalTurnCount > 2){
+if(a1 === '' && ((a2 === computer && a3 === computer) || 
+ 	(b2 === computer && c3 === computer) || (b1 === computer && c1 === computer))){
+ 	select = boxUsedHard[0];
+ } else if (a2 === '' && ((a1 === computer && a3 === computer) || 
+ 	(b2 === computer && c2 === computer))){
+ 	select = boxUsedHard[1];
+ } else if (a3 === '' && ((a1 === computer && a2 === computer) || 
+ 	(b2 === computer && c1 === computer) || (b3 === computer && c3 === computer))){
+ 	select = boxUsedHard[2];
+ } else if (b1 === '' && ((a1 === computer && c1 === computer) || 
+ 	(b2 === computer && b3 === computer))){
+ 	select = boxUsedHard[3];
+ } else if (b2 === '' && ((a1 === computer && c3 === computer) || 
+ 	(a2 === computer && c2 === computer) || (a3 === computer && c1 === computer) ||
+ 	(b1 === computer && b3 === computer))){
+ 	select = boxUsedHard[4];
+ } else if (b3 === '' && ((a3 === computer && c3 === computer) || 
+ 	(b1 === computer && b2 === computer))){
+ 	select = boxUsedHard[5];
+ } else if (c1 === '' && ((a1 === computer && b1 === computer) || 
+ 	(b2 === computer && a3 === computer) || (c2 === computer && c3 === computer))){
+ 	select = boxUsedHard[6];
+ } else if (c2 === '' && ((a2 === computer && b2 === computer) || 
+ 	(c1 === computer && c3 === computer))){
+ 	select = boxUsedHard[7];
+ } else if (c3 === '' && ((a1 === computer && b2 === computer) || 
+ 	(a3 === computer && b3 === computer) || (c1 === computer && c2 === computer))){
+ 	select = boxUsedHard[8];
+ } else if(a1 === '' && ((a2 === player && a3 === player) || 
+ 	(b2 === player && c3 === player) || (b1 === player && c1 === player))){
+ 	select = boxUsedHard[0];
+ } else if (a2 === '' && ((a1 === player && a3 === player) || 
+ 	(b2 === player && c2 === player))){
+ 	select = boxUsedHard[1];
+ } else if (a3 === '' && ((a1 === player && a2 === player) || 
+ 	(b2 === player && c1 === player) || (b3 === player && c3 === player))){
+ 	select = boxUsedHard[2];
+ } else if (b1 === '' && ((a1 === player && c1 === player) || 
+ 	(b2 === player && b3 === player))){
+ 	select = boxUsedHard[3];
+ } else if (b2 === '' && ((a1 === player && c3 === player) || 
+ 	(a2 === player && c2 === player) || (a3 === player && c1 === player) ||
+ 	(b1 === player && b3 === player))){
+ 	select = boxUsedHard[4];
+ } else if (b3 === '' && ((a3 === player && c3 === player) || 
+ 	(b1 === player && b2 === player))){
+ 	select = boxUsedHard[5];
+ } else if (c1 === '' && ((a1 === player && b1 === player) || 
+ 	(b2 === player && a3 === player) || (c2 === player && c3 === player))){
+ 	select = boxUsedHard[6];
+ } else if (c2 === '' && ((a2 === player && b2 === player) || 
+ 	(c1 === player && c3 === player))){
+ 	select = boxUsedHard[7];
+ } else if (c3 === '' && ((a1 === player && b2 === player) || 
+ 	(a3 === player && b3 === player) || (c1 === player && c2 === player))){
+ 	select = boxUsedHard[8];
+ } else { select = boxUsed[Math.floor(Math.random()*boxUsed.length)];}
+
+} else if (totalTurnCount<=2){
+	if (a1 === player){
+		select = boxUsedHard[4]
+	} else if (a2 === player){
+		select = boxUsedHard[4]
+	}  else if (a3 === player){
+		select = boxUsedHard[4]
+	}  else if (b1 === player){
+		select = boxUsedHard[0]
+	}  else if (b2 === player){
+		select = boxUsedHard[2]
+	}  else if (b3 === player){
+		select = boxUsedHard[8]
+	}  else if (c1 === player){
+		select = boxUsedHard[8]
+	}  else if (c2 === player){
+		select = boxUsedHard[4]
+	}  else if (c3 === player){
+		select = boxUsedHard[4]
+	}
+  }
+	boxesLeft(select);
+	select.children[0].innerHTML = computer;
+	compPush(select);
+	findWinner();
+}
+
+
+
+
+
+
+function stopProgramHard(){
+	if($status.innerHTML !== '') {
+		findWinner();
+	} else hardMode();
+	if($status.innerHTML === 'You Win!'){
+		$wins.innerHTML = winCount += 1;
+	} else if ($status.innerHTML === 'You Lost'){
+		$losses.innerHTML = lossCount += 1;
+	} else if ($status.innerHTML === 'Game Is A Draw'){
+		$draws.innerHTML = drawCount += 1;
+	}
+}
+
+function stopProgramEasy(){
 	if($status.innerHTML !== '') {
 		findWinner();
 	} else computerSelection();
@@ -288,21 +439,21 @@ function stopProgram(){
 }
 
 //Combines functions to determine whether to continue round, end due to winner, end due to draw
+
 function compTurn(){
 	turnCount++;
 	gameOver();
-	stopProgram();
+	if(mode === 'easy'){
+	stopProgramEasy();
+	} else if (mode === 'hard'){
+		stopProgramHard();
+	}
 }
 
 
-
+//Gives delay response for computer choice
 function delay(){ setTimeout(compTurn, 500)}
 
-
-
-// if(indexX($a1) !== -1 && indexX($a2) !== -1 && indexX($a3) !== -1){
-// 	winX();
-// }
 
 
 

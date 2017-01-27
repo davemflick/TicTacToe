@@ -16,11 +16,26 @@ border: 1px solid black;
 border-radius: 20px;
 margin: auto;
 margin-top: 20px;
-margin-bottom: 20px;
+margin-bottom: 10px;
 }
 
 #playerX, #playerO{
 	visibility: hidden;
+}
+
+#difficulty {
+	margin: 10px;
+}
+.borderClicked {
+ border: 1px solid blue;
+}
+
+#easy {
+	margin-right: 20px;
+}
+
+#hard{
+margin-left: 20px;
 }
 
 #gameContainer {
