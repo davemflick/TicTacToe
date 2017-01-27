@@ -226,12 +226,12 @@ $c3.onclick = function(){
 //If the Player Wins round
 function win (){
   $status.innerHTML = 'You Win!';
-  setTimeout(reset, 3000);
+  setTimeout(reset, 2000);
 }
 //If computer wins round.
 function lost (){
  $status.innerHTML = 'You Lost';
- setTimeout(reset, 3000);	
+ setTimeout(reset, 2000);	
 }
 
 //Search through scoreX array to determine if nputed value is present and if so its index 
@@ -273,7 +273,7 @@ function findWinner(){
 function gameOver(){
 	totalTurnCount += 1;
   if(totalTurnCount === 9){$status.innerHTML = 'Game Is A Draw';
-  setTimeout(reset, 3000);
+  setTimeout(reset, 2000);
  }
 }
 
@@ -411,7 +411,7 @@ if(a1 === '' && ((a2 === computer && a3 === computer) ||
 
 
 
-
+// Will stop program whether in hard or easy.
 function stopProgramHard(){
 	if($status.innerHTML !== '') {
 		findWinner();
@@ -438,7 +438,7 @@ function stopProgramEasy(){
 	}
 }
 
-//Combines functions to determine whether to continue round, end due to winner, end due to draw
+//Combines functions to determine whether to continue match, end due to winner, loss or draw.
 
 function compTurn(){
 	turnCount++;
